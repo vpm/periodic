@@ -22,9 +22,14 @@ case "$zfs_snapshot_enable" in
         zfsvol_freespace=$(let ${zfsvol_get_size}/${zfs_zfsvol_freespace})
 
         if [ ${zfsvol_get_size} -ge ${zfsvol_freespace} ]; then
-                        zfs snapshot ${zfsvol}@${YYYY_MM_DD} > /dev/null 2>&1
-                        zfs-snapshot-clean -k ${zfs_snapshot_clean_algoritm} ${zfsvol}@${YYYY_MM_DD}
+            zfs snapshot ${zfsvol}@${YYYY_MM_DD} > /dev/null 2>&1
         fi
+        
+        case "$zfs_snapshot_clean_enable" in
+            [Yy][Ee][Ss])
+                    zfs-snapshot-clean -k ${zfs_snapshot_clean_algoritm} ${zfsvol}
+            *)  rc=0;;
+        esac
 
         done;;
     *)  rc=0;;

@@ -10,6 +10,7 @@ fi
 : ${zfs_snapshot_zfsvol_list=""}
 : ${zfs_snapshot_clean_enable="NO"}
 : ${zfs_snapshot_clean_algoritm="7D12M"}
+: ${zfs_snapshot_clean_cmd="/usr/local/sbin/zfs-snapshot-clean"}
 : ${zfs_zfsvol_freespace="10"}
 
 YYYY_MM_DD=$(date +%Y-%m-%d)
@@ -27,7 +28,9 @@ case "$zfs_snapshot_enable" in
         
         case "$zfs_snapshot_clean_enable" in
             [Yy][Ee][Ss])
-                    zfs-snapshot-clean -k ${zfs_snapshot_clean_algoritm} ${zfsvol}
+                if [ -f ${zfs_snapshot_clean_cmd} ]; then
+                    ${zfs_snapshot_clean_cmd} -k ${zfs_snapshot_clean_algoritm} ${zfsvol}
+                fi
             *)  rc=0;;
         esac
 

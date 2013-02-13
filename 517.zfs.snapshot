@@ -23,13 +23,14 @@ case "$zfs_snapshot_enable" in
         zfsvol_freespace=$(let ${zfsvol_get_size}/${zfs_zfsvol_freespace})
 
         if [ ${zfsvol_get_size} -ge ${zfsvol_freespace} ]; then
-            zfs snapshot ${zfsvol}@${YYYY_MM_DD} > /dev/null 2>&1
+            echo YYYY_MM_DD > /var/log/517.zfs.snapshot
+            zfs snapshot ${zfsvol}@${YYYY_MM_DD} >> /var/log/517.zfs.snapshot
         fi
         
         case "$zfs_snapshot_clean_enable" in
             [Yy][Ee][Ss])
                 if [ -f ${zfs_snapshot_clean_cmd} ]; then
-                    ${zfs_snapshot_clean_cmd} -k ${zfs_snapshot_clean_algoritm} ${zfsvol}
+                    ${zfs_snapshot_clean_cmd} -v -k ${zfs_snapshot_clean_algoritm} ${zfsvol} >> /var/log/517.zfs.snapshot
                 fi
                 ;;
             *)  rc=0;;

@@ -1,0 +1,33 @@
+#!/bin/sh
+# 517.zfs.snapshot
+
+if [ -r /etc/defaults/periodic.conf ]; then
+    . /etc/defaults/periodic.conf
+        source_periodic_confs
+fi
+
+: ${zfs_snapshot_enable="NO"}
+: ${zfs_snapshot_zfsvol_list=""}
+: ${zfs_snapshot_clean_enable="NO"}
+: ${zfs_snapshot_clean_algoritm="7D12M"}
+: ${zfs_zfsvol_freespace="10"}
+
+YYYY_MM_DD=$(date +%Y-%m-%d)
+
+case "$zfs_snapshot_enable" in
+    [Yy][Ee][Ss])
+        for zfsvol in ${zfs_snapshot_zfsvol_list}; do
+
+        zfsvol_get_size=$(zfs get -pH -o value available $zfsvol)
+        zfsvol_freespace=$(let ${zfsvol_get_size}/${zfs_zfsvol_freespace})
+
+        if [ ${zfsvol_get_size} -ge ${zfsvol_freespace} ]; then
+                        zfs snapshot ${zfsvol}@${YYYY_MM_DD} > /dev/null 2>&1
+                        zfs-snapshot-clean -k ${zfs_snapshot_clean_algoritm} ${zfsvol}@${YYYY_MM_DD}
+        fi
+
+        done;;
+    *)  rc=0;;
+esac
+
+exit $rc

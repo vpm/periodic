@@ -31,6 +31,7 @@ case "$zfs_snapshot_enable" in
                 if [ -f ${zfs_snapshot_clean_cmd} ]; then
                     ${zfs_snapshot_clean_cmd} -k ${zfs_snapshot_clean_algoritm} ${zfsvol}
                 fi
+                ;;
             *)  rc=0;;
         esac
 

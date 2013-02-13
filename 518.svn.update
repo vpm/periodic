@@ -13,13 +13,13 @@ fi
 : ${freebsd_version="9.0"}
 
 case "$svn_update_ports_enable" in [Yy][Ee][Ss])
-        ${svn_cmd} checkout svn://${svn_mirror}/ports/head/ /usr/ports/ > /var/log/514.csup-update-ports.log
+        ${svn_cmd} checkout svn://${svn_update_mirror}/ports/head/ /usr/ports/ > /var/log/514.csup-update-ports.log
     ;;
     *)  rc=0;;
 esac
 
 case "$svn_update_src_enable" in [Yy][Ee][Ss])
-        ${svn_cmd} checkout svn://${svn_mirror}/base/releng/${freebsd_version}/ /usr/src/ >> /var/log/514.csup-update-ports.log
+        ${svn_cmd} checkout svn://${svn_update_mirror}/base/releng/${freebsd_version}/ /usr/src/ >> /var/log/514.csup-update-ports.log
     ;;
     *)  rc=0;;
 esac

@@ -9,7 +9,7 @@ fi
 : ${zfs_snapshot_enable="NO"}
 : ${zfs_snapshot_zfsvol_list=""}
 : ${zfs_snapshot_clean_enable="NO"}
-: ${zfs_snapshot_clean_algoritm="7D12M"}
+: ${zfs_snapshot_clean_algoritm="14D24M"}
 : ${zfs_snapshot_clean_cmd="/usr/local/sbin/zfs-snapshot-clean"}
 : ${zfs_zfsvol_freespace="10"}
 

@@ -17,7 +17,7 @@ YYYY_MM_DD=$(date +%Y-%m-%d)
 
 case "$zfs_snapshot_enable" in
     [Yy][Ee][Ss])
-        echo '${YYYY_MM_DD}' > /var/log/517.zfs.snapshot
+        echo '$YYYY_MM_DD' > /var/log/517.zfs.snapshot
 
         for zfsvol in ${zfs_snapshot_zfsvol_list}; do
 

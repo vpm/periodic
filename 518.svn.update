@@ -10,7 +10,7 @@ fi
 : ${svn_update_src_enable="YES"}
 : ${svn_update_mirror="svn.FreeBSD.org"}
 : ${svn_cmd="/usr/local/bin/svn"}
-: ${freebsd_version=""}
+: ${freebsd_version="9.0"}
 
 case "$svn_update_ports_enable" in [Yy][Ee][Ss])
         ${svn_cmd} checkout svn://${svn_update_mirror}/ports/head/ /usr/ports/ > /var/log/518.svn.update.log

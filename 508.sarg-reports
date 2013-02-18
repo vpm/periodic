@@ -12,33 +12,9 @@ fi
 : ${sarg_reports_monthly_enable="YES"}
 : ${sarg_reports_dir="/usr/local/www/sarg"}
 : ${sarg_reports_conf="/usr/local/etc/sarg/sarg-reports.conf"}
-: ${squid_rotate_store_logs="YES"}
-: ${squid_log_dir="/var/log/squid"}
-: ${squid_log_store_dir="/data/log/squid"}
-
 : ${sarg_cmd=/usr/local/bin/sarg}
-: ${squid_cmd="/usr/local/sbin/squid"}
 
-case "$squid_rotate_store_logs" in [Yy][Ee][Ss])
-    # Creatind dir's if needed
-    if [ ! -d "$squid_log_store_dir" ]; then
-        mkdir -p $squid_log_store_dir
-    fi
-
-    # Rotating squid access.log
-    if [ -f "$squid_log_dir/access.log" ]; then
-        $squid_cmd -k rotate
-        sleep 10
-    else
-        echo "Error: squid access.log no found!"
-        exit
-    fi
-    # Moving squid access.log to store dir
-    cat $squid_log_dir/access.log.0 >> $squid_log_store_dir/access-$datelog.log
-
-    ;;
-    *)  rc=0;;
-esac
+: ${squid_log_store_dir="/data/log/squid"}
 
 case "$sarg_reports_enable" in [Yy][Ee][Ss])
 

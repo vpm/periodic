@@ -16,6 +16,13 @@ fi
 
 : ${squid_log_store_dir="/data/log/squid"}
 
+# Dates variables
+yesterday=$(date -v -1d +%d/%m/%Y)
+month_first_date=$(date -v -1m +%d/%m/%Y)
+prev_month_first_date=$(date -v1d -v-1m +%d/%m/%Y)
+prev_month_last_date=$(date -v1d -v-1d +%d/%m/%Y)
+datelog=$(date -v-1d +%Y-%m)
+
 case "$sarg_reports_enable" in [Yy][Ee][Ss])
 
 # Check squid access.log

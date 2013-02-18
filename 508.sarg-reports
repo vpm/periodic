@@ -1,0 +1,75 @@
+#!/bin/sh
+# 508.sarg-reports v1.04
+
+if [ -r /etc/defaults/periodic.conf ]; then
+    . /etc/defaults/periodic.conf
+                source_periodic_confs
+fi
+
+: ${sarg_reports_enable="YES"}
+: ${sarg_report_current_enable="YES"}
+: ${sarg_report_daily_enable="YES"}
+: ${sarg_report_monthly_enable="YES"}
+: ${public_html_dir="/usr/local/www/sarg"}
+: ${sarg_cmd=/usr/local/bin/sarg}
+: ${sarg_reports_conf="/usr/local/etc/sarg/sarg-reports.conf"}
+: ${squid_rotate_store_logs="YES"}
+: ${squid_cmd="/usr/local/sbin/squid"}
+: ${squid_log_dir="/var/log/squid"}
+: ${squid_log_store_dir="/usr/local/samba/log/squid"}
+
+
+case "$sarg_reports_enable" in [Yy][Ee][Ss])
+
+# Check squid access.log
+if  [ -f "$squid_log_store_dir/access-$datelog.log" ]; then
+
+    # Creating sarg config current if not exist
+    if [ ! -f "$sarg_reports_conf" ]; then
+        echo "charset UTF-8"           >  $sarg_reports_conf
+        echo "graphs no"                        >> $sarg_reports_conf
+        echo "resolve_ip yes"                   >> $sarg_reports_conf
+        echo "date_format e"                    >> $sarg_reports_conf
+        echo "overwrite_report yes"             >> $sarg_reports_conf
+        echo "show_successful_message no"       >> $sarg_reports_conf
+        echo "show_read_statistics no"          >> $sarg_reports_conf
+        echo "show_sarg_logo no"                >> $sarg_reports_conf
+        echo "displayed_values abbreviation"    >> $sarg_reports_conf
+    fi
+
+    # Check if sarg report current enable
+    case "$sarg_report_current_enable" in [Yy][Ee][Ss])
+        # Creating sarg report current
+        rm -rf "$public_html_dir/sarg-current"/*
+        $sarg_cmd -f $sarg_reports_conf -l $squid_log_store_dir/access-$datelog.log -o "$public_html_dir/sarg-current" -d $month_first_date-$yesterday > /dev/null 2>&1
+    ;;
+    *)  rc=0;;
+    esac
+
+    # Check if sarg report daily enable
+    case "$sarg_report_daily_enable" in [Yy][Ee][Ss])
+        # Creating sarg report daily
+        $sarg_cmd -f $sarg_reports_conf -l $squid_log_store_dir/access-$datelog.log -o "$public_html_dir/sarg-daily" -d $yesterday-$yesterday > /dev/null 2>&1
+    ;;
+    *)  rc=0;;
+    esac
+
+    # Check if sarg report monthly enable
+    case "$sarg_report_monthly_enable" in [Yy][Ee][Ss])
+        # Creating sarg report monthly
+        if [ `date +%d` -eq 1 ]; then
+            $sarg_cmd -f $sarg_reports_conf -l $squid_log_store_dir/access-$datelog.log -o "$public_html_dir/sarg-monthly" -d $prev_month_first_date-$prev_month_last_date > /dev/null 2>&1
+        fi
+    ;;
+    *)  rc=0;;
+    esac
+
+else
+    echo "Error: squid acccess.log file not found!"
+fi
+
+    ;;
+    *)  rc=0;;
+esac
+
+exit $rc

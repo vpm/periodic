@@ -32,6 +32,8 @@ case "$zfs_snapshot_enable" in
             [Yy][Ee][Ss])
                 if [ -f ${zfs_snapshot_clean_cmd} ]; then
                     ${zfs_snapshot_clean_cmd} -v -k ${zfs_snapshot_clean_algoritm} ${zfsvol} >> /var/log/517.zfs.snapshot 2>&1
+                else
+                    echo "zfs-snapshot-clean, install port sysutils/zfs-snapshot-clean"
                 fi
                 ;;
             *)  rc=0;;

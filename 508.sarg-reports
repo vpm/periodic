@@ -1,5 +1,5 @@
 #!/bin/sh
-# 508.sarg-reports v1.04
+# 508.sarg-reports
 
 if [ -r /etc/defaults/periodic.conf ]; then
     . /etc/defaults/periodic.conf

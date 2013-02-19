@@ -41,27 +41,27 @@ if  [ -f "$squid_log_store_dir/access-$datelog.log" ]; then
     fi
 
     # Check if sarg report current enable
-    case "$sarg_report_current_enable" in [Yy][Ee][Ss])
+    case "$sarg_reports_current_enable" in [Yy][Ee][Ss])
         # Creating sarg report current
-        rm -rf "$public_html_dir/sarg-current"/*
-        $sarg_cmd -f $sarg_reports_conf -l $squid_log_store_dir/access-$datelog.log -o "$public_html_dir/sarg-current" -d $month_first_date-$yesterday > /dev/null 2>&1
+        rm -rf $sarg_reports_dir/sarg-current/*
+        $sarg_cmd -f $sarg_reports_conf -l $squid_log_store_dir/access-$datelog.log -o "$sarg_reports_dir/sarg-current" -d $month_first_date-$yesterday > /dev/null 2>&1
     ;;
     *)  rc=0;;
     esac
 
     # Check if sarg report daily enable
-    case "$sarg_report_daily_enable" in [Yy][Ee][Ss])
+    case "$sarg_reports_daily_enable" in [Yy][Ee][Ss])
         # Creating sarg report daily
-        $sarg_cmd -f $sarg_reports_conf -l $squid_log_store_dir/access-$datelog.log -o "$public_html_dir/sarg-daily" -d $yesterday-$yesterday > /dev/null 2>&1
+        $sarg_cmd -f $sarg_reports_conf -l $squid_log_store_dir/access-$datelog.log -o "$sarg_reports_dir/sarg-daily" -d $yesterday-$yesterday > /dev/null 2>&1
     ;;
     *)  rc=0;;
     esac
 
     # Check if sarg report monthly enable
-    case "$sarg_report_monthly_enable" in [Yy][Ee][Ss])
+    case "$sarg_reports_monthly_enable" in [Yy][Ee][Ss])
         # Creating sarg report monthly
         if [ `date +%d` -eq 1 ]; then
-            $sarg_cmd -f $sarg_reports_conf -l $squid_log_store_dir/access-$datelog.log -o "$public_html_dir/sarg-monthly" -d $prev_month_first_date-$prev_month_last_date > /dev/null 2>&1
+            $sarg_cmd -f $sarg_reports_conf -l $squid_log_store_dir/access-$datelog.log -o "$sarg_reports_dir/sarg-monthly" -d $prev_month_first_date-$prev_month_last_date > /dev/null 2>&1
         fi
     ;;
     *)  rc=0;;

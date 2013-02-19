@@ -7,13 +7,13 @@ if [ -r /etc/defaults/periodic.conf ]; then
 fi
 
 : ${sarg_reports_enable="YES"}
-: ${sarg_report_current_enable="YES"}
-: ${sarg_report_daily_enable="YES"}
-: ${sarg_report_monthly_enable="YES"}
-: ${public_html_dir="/usr/local/www/sarg"}
+: ${sarg_reports_current_enable="YES"}
+: ${sarg_reports_daily_enable="YES"}
+: ${sarg_reports_monthly_enable="YES"}
+: ${sarg_reports_dir="/usr/local/www/sarg"}
 : ${sarg_cmd=/usr/local/bin/sarg}
-: ${squid_log_store_dir=/data/log/squid}
 : ${sarg_reports_conf="/usr/local/etc/sarg/sarg-reports.conf"}
+: ${squid_log_store_dir=/data/log/squid}
 
 # Dates variables
 yesterday=$(date -v -1d +%d/%m/%Y)

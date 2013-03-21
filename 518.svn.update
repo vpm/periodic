@@ -6,8 +6,8 @@ if [ -r /etc/defaults/periodic.conf ]; then
         source_periodic_confs
 fi
 
-: ${svn_update_ports_enable="NO"}
-: ${svn_update_src_enable="NO"}
+: ${svn_update_ports_enable="YES"}
+: ${svn_update_src_enable="YES"}
 : ${svn_update_mirror="svn://svn.FreeBSD.org"}
 : ${svn_cmd="/usr/local/bin/svn"}
 : ${freebsd_version="releng/9.0"}

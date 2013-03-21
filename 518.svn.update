@@ -8,18 +8,18 @@ fi
 
 : ${svn_update_ports_enable="NO"}
 : ${svn_update_src_enable="NO"}
-: ${svn_update_mirror="svn.FreeBSD.org"}
+: ${svn_update_mirror="svn://svn.FreeBSD.org"}
 : ${svn_cmd="/usr/local/bin/svn"}
 : ${freebsd_version="releng/9.0"}
 
 case "$svn_update_ports_enable" in [Yy][Ee][Ss])
-        ${svn_cmd} checkout svn://${svn_update_mirror}/ports/head/ /usr/ports/ > /var/log/518.svn.update.log
+        ${svn_cmd} checkout ${svn_update_mirror}/ports/head/ /usr/ports/ > /var/log/518.svn.update.log
     ;;
     *)  rc=0;;
 esac
 
 case "$svn_update_src_enable" in [Yy][Ee][Ss])
-        ${svn_cmd} checkout svn://${svn_update_mirror}/base/${freebsd_version}/ /usr/src/ >> /var/log/518.svn.update.log
+        ${svn_cmd} checkout ${svn_update_mirror}/base/${freebsd_version}/ /usr/src/ >> /var/log/518.svn.update.log
     ;;
     *)  rc=0;;
 esac

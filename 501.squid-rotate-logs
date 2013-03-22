@@ -7,7 +7,7 @@ fi
 : ${squid_rotate_store_logs="YES"}
 : ${squid_cmd="/usr/local/sbin/squid"}
 : ${squid_log_dir="/var/log/squid"}
-: ${squid_log_store_dir="/usr/local/samba/log/squid"}
+: ${squid_log_store_dir="/data/log/squid"}
 
 # Dates variables
 datelog=$(date -v-1d +%Y-%m)

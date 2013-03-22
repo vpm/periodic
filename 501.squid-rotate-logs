@@ -1,0 +1,36 @@
+#!/bin/sh
+if [ -r /etc/defaults/periodic.conf ]; then
+    . /etc/defaults/periodic.conf
+        source_periodic_confs
+fi
+
+: ${squid_rotate_store_logs="YES"}
+: ${squid_cmd="/usr/local/sbin/squid"}
+: ${squid_log_dir="/var/log/squid"}
+: ${squid_log_store_dir="/usr/local/samba/log/squid"}
+
+# Dates variables
+datelog=$(date -v-1d +%Y-%m)
+
+case "$squid_rotate_store_logs" in [Yy][Ee][Ss])
+    # Creatind dir's if needed
+    if [ ! -d "$squid_log_store_dir" ]; then
+        mkdir -p $squid_log_store_dir
+    fi
+
+    # Rotating squid access.log
+    if [ -f "$squid_log_dir/access.log" ]; then
+        $squid_cmd -k rotate
+        sleep 10
+    else
+        echo "Error: squid access.log no found!"
+        exit
+    fi
+    # Moving squid access.log to store dir
+    cat $squid_log_dir/access.log.0 >> $squid_log_store_dir/access-$datelog.log
+
+    ;;
+    *)  rc=0;;
+esac
+
+exit $rc

@@ -1,0 +1,25 @@
+#!/bin/sh
+# 519.pf.trusted-home v1.01
+
+if [ -r /etc/defaults/periodic.conf ]; then
+    . /etc/defaults/periodic.conf
+        source_periodic_confs
+fi
+
+: ${pf_trusted_home_enable="YES"}
+: ${pf_trusted_home_host="homevpm.asuscomm.com"}
+
+ip_old=$(cat /etc/pf.trusted-hosts-home)
+ip_current=$(host -W 10 ${pf_trusted_home_host} | grep 'has address' | /usr/bin/awk '{print $4}')
+
+case "$pf_trusted_home_enable" in [Yy][Ee][Ss])
+if [ $ip_old != $ip_current ]; then
+  pfctl -q -t TRUSTED-HOSTS -T delete $ip_old
+	pfctl -q -t TRUSTED-HOSTS -T add $ip_current
+	$ip_current > /etc/pf.trusted-hosts-home
+fi
+	;;
+	*)  rc=0;;
+esac
+
+exit $rc

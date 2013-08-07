@@ -23,8 +23,8 @@ if [ ! -z $ipcurrent ]; then
                         echo $ipcurrent > /etc/pf.trusted-hosts-home
                 fi
         else
-                echo pfctl -q -t TRUSTED-HOSTS -T add $ipcurrent
-                echo $ipcurrent > /etc/pf.trusted-hosts-home    
+                pfctl -q -t TRUSTED-HOSTS -T add $ipcurrent
+                echo $ipcurrent > /etc/pf.trusted-hosts-home
         fi
 fi;;
         *)  rc=0;;

@@ -19,8 +19,8 @@ case "$pf_trusted_home_enable" in [Yy][Ee][Ss])
 		ipold=$(egrep '[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}' /etc/pf.trusted-hosts-home)
 	        if [ ! -z $ipold ]; then
                 	if [ $ipcurrent != $ipold ]; then
-	                        echo pfctl -q -t TRUSTED-HOSTS -T delete $ipold
-                        	echo pfctl -q -t TRUSTED-HOSTS -T add $ipcurrent
+	                        pfctl -q -t TRUSTED-HOSTS -T delete $ipold
+                        	pfctl -q -t TRUSTED-HOSTS -T add $ipcurrent
                         	echo $ipcurrent > /etc/pf.trusted-hosts-home
                 	fi
         	else

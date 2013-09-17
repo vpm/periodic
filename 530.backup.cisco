@@ -1,0 +1,18 @@
+#!/bin/sh
+# 530.backup.cisco
+
+if [ -r /etc/defaults/periodic.conf ]; then
+    . /etc/defaults/periodic.conf
+        source_periodic_confs
+fi
+
+: ${cisco_list="cat21.m cat22.m cat31.m cat32.m cat51.m cat52.m cat53.m cat61.m cat91.m cat92.m c2960-99.m"}
+: ${cisco_backupserver="192.168.7.4"}
+
+date_full=$(date +%Y-%m-%d)
+
+for cat in ${cisco_list}; do
+	rsh $cat copy startup-config tftp://$cisco_backupserver/$date_full-$cat.cfg > /dev/null 2>&1
+done
+
+exit $rc

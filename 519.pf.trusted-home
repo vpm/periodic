@@ -7,7 +7,7 @@ if [ -r /etc/defaults/periodic.conf ]; then
 fi
 
 : ${pf_trusted_home_enable="YES"}
-: ${pf_trusted_home_host="homevpm.asuscomm.com"}
+: ${pf_trusted_home_host=""}
 
 
 case "$pf_trusted_home_enable" in [Yy][Ee][Ss])

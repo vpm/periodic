@@ -6,29 +6,29 @@ if [ -r /etc/defaults/periodic.conf ]; then
         source_periodic_confs
 fi
 
-: ${519.pf.trusted.home_enable="NO"}
-: ${519.pf.trusted.home_host=""}
+: ${pf_trusted_home_enable="NO"}
+: ${pf_trusted_home_host=""}
 
 
-case "$519.pf.trusted.home_enable" in [Yy][Ee][Ss])
-    ipcurrent=$(host -W 10 ${519.pf.trusted.home_host} | grep 'has address' | /usr/bin/awk '{print $4}' | egrep '[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}')
-	if [ ! -z $ipcurrent ]; then
-		if [ ! -f /etc/pf.trusted-hosts-home ]; then
-                	touch /etc/pf.trusted-hosts-home
-	        fi
-		ipold=$(egrep '[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}' /etc/pf.trusted-hosts-home)
-	        if [ ! -z $ipold ]; then
-                	if [ $ipcurrent != $ipold ]; then
-	                        pfctl -q -t TRUSTED-HOSTS -T delete $ipold
-                        	pfctl -q -t TRUSTED-HOSTS -T add $ipcurrent
-                        	echo $ipcurrent > /etc/pf.trusted-hosts-home
-                	fi
-        	else
-                	pfctl -q -t TRUSTED-HOSTS -T add $ipcurrent
-                	echo $ipcurrent > /etc/pf.trusted-hosts-home
-        	fi
-	fi
-	;;
+case "$pf_trusted_home_enable" in [Yy][Ee][Ss])
+    ipcurrent=$(host -W 10 ${pf_trusted_home_host} | grep 'has address' | /usr/bin/awk '{print $4}' | egrep '[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}')
+        if [ ! -z $ipcurrent ]; then
+                if [ ! -f /etc/pf.trusted-hosts-home ]; then
+                        touch /etc/pf.trusted-hosts-home
+                fi
+                ipold=$(egrep '[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}\.[[:digit:]]{1,3}' /etc/pf.trusted-hosts-home)
+                if [ ! -z $ipold ]; then
+                        if [ $ipcurrent != $ipold ]; then
+                                pfctl -q -t TRUSTED-HOSTS -T delete $ipold
+                                pfctl -q -t TRUSTED-HOSTS -T add $ipcurrent
+                                echo $ipcurrent > /etc/pf.trusted-hosts-home
+                        fi
+                else
+                        pfctl -q -t TRUSTED-HOSTS -T add $ipcurrent
+                        echo $ipcurrent > /etc/pf.trusted-hosts-home
+                fi
+        fi
+        ;;
         *)  rc=0;;
 esac
 

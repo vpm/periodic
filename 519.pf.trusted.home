@@ -1,5 +1,5 @@
 #!/bin/sh
-# 519.pf.trusted-home v1.02
+# 519.pf.trusted.home v1.03
 
 if [ -r /etc/defaults/periodic.conf ]; then
     . /etc/defaults/periodic.conf

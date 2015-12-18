@@ -1,0 +1,23 @@
+#!/bin/sh
+# 516.rsync.backup
+
+if [ -r /etc/defaults/periodic.conf ]; then
+    . /etc/defaults/periodic.conf
+        source_periodic_confs
+fi
+
+: ${rsync_backup_enable="NO"}
+: ${rsync_backup_remote=""}
+: ${rsync_backup_local=""}
+: ${rsync_backup_directory=""}
+: ${rsync_backup_args="--quiet --recursive --update --delete --force --compress --compress-level=9 --log-file=/var/log/516.rsync.backup.log "}
+: ${rsync_cmd="/usr/local/bin/rsync"}
+
+case "$rsync_backup_enable" in [Yy][Ee][Ss])
+        for i in ${rsync_backup_directory}; do
+        $rsync_cmd ${rsync_backup_args} ${rsync_backup_local}/$i/ $rsync_backup_remote/$i/
+        done;;
+    *)  rc=0;;
+esac
+
+exit $rc
